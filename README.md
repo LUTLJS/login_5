@@ -1,6 +1,7 @@
 # Small Demos
 ## 1:用户登录退出   
 Using LoginServlet to create a simplest Webapp of User Login and Logout.  
+登录成功显示上次登录时间。
 
 ## 2:文件下载
 Using DownloadServlet to download file from server side.  
