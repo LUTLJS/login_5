@@ -41,7 +41,10 @@ public class LoginServlet extends HttpServlet {
         //5:check if user is null
         if (user==null){
             //failed to login
-            req.getRequestDispatcher("/failServlet").forward(req,resp);
+            resp.setContentType("text/html;charset=utf8");
+//            resp.getWriter().write("<script>alert('登录失败，用户名或密码错误，请重新登录。');</script>");
+//            req.getRequestDispatcher("/index.jsp").forward(req,resp);
+            resp.sendRedirect(req.getContextPath()+"/index.jsp");
         }else {
             //logged in!
 //            req.setAttribute("user",user);
