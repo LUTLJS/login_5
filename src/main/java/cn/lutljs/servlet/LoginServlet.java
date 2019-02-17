@@ -4,6 +4,7 @@ import cn.lutljs.dao.UserDao;
 import cn.lutljs.domain.User;
 import org.apache.commons.beanutils.BeanUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +44,9 @@ public class LoginServlet extends HttpServlet {
             req.getRequestDispatcher("/failServlet").forward(req,resp);
         }else {
             //logged in!
-            req.setAttribute("user",user);
+//            req.setAttribute("user",user);
+            ServletContext servletContext = req.getServletContext();
+            servletContext.setAttribute("user",user);
             req.getRequestDispatcher("/successServlet").forward(req,resp);
         }
 
