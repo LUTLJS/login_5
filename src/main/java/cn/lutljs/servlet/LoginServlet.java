@@ -2,6 +2,7 @@ package cn.lutljs.servlet;
 
 import cn.lutljs.dao.UserDao;
 import cn.lutljs.domain.User;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+
 @WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
     @Override
@@ -21,10 +25,16 @@ public class LoginServlet extends HttpServlet {
         //1:setting characterEncoding
         req.setCharacterEncoding("utf-8");
         //2:getting username and password
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+        Map<String, String[]> map = req.getParameterMap();
         //3:encapsulate username and password into User object
-        User loginUser = new User(username, password);
+        User loginUser = new User();
+        try {
+            BeanUtils.populate(loginUser,map);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
         //4:call UserDao.login to get User from DataBase
         User user = new UserDao().login(loginUser);
         //5:check if user is null
