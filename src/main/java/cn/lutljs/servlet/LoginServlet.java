@@ -42,9 +42,12 @@ public class LoginServlet extends HttpServlet {
         if (user==null){
             //failed to login
             resp.setContentType("text/html;charset=utf8");
-//            resp.getWriter().write("<script>alert('登录失败，用户名或密码错误，请重新登录。');</script>");
-//            req.getRequestDispatcher("/index.jsp").forward(req,resp);
-            resp.sendRedirect(req.getContextPath()+"/index.jsp");
+           /* resp.getWriter().write("<script>alert('登录失败，用户名或密码错误，请重新登录。');" +
+                    "location.href=\"http://localhost:8080/index.jsp\";" +
+                    "</script>");*/
+            req.getRequestDispatcher("/loginFailed.jsp").forward(req,resp);
+//            resp.sendRedirect(req.getContextPath()+"/index.jsp");
+//            req.getRequestDispatcher("/failServlet").forward(req,resp);
         }else {
             //logged in!
 //            req.setAttribute("user",user);
