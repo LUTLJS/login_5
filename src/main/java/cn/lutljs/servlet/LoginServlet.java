@@ -53,7 +53,8 @@ public class LoginServlet extends HttpServlet {
 //            req.setAttribute("user",user);
             ServletContext servletContext = req.getServletContext();
             servletContext.setAttribute("user",user);
-            req.getRequestDispatcher("/successServlet").forward(req,resp);
+            resp.sendRedirect("/loggedIn.jsp");
+//            req.getRequestDispatcher("/loggedIn.jsp").forward(req,resp);
         }
 
     }
