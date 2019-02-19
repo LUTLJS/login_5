@@ -27,9 +27,9 @@ public class LoginServlet extends HttpServlet {
         //1:setting characterEncoding
         req.setCharacterEncoding("utf-8");
         //get checkcode from request
-        String login_checkcode = req.getParameter("checkcode");
+        String login_checkcode = req.getParameter("verificationCode");
         //get checkcode from session-checkcode
-        String checkcode = (String) req.getSession().getAttribute("checkcode");
+        String checkcode = (String) req.getSession().getAttribute("verificationCode");
         req.getSession().invalidate();
         if (login_checkcode!=null && login_checkcode.length()>0){
             if (login_checkcode.equalsIgnoreCase(checkcode)){

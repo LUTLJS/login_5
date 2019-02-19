@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
-@WebServlet("/checkCodeServlet")
+@WebServlet("/verificationCodeServlet")
 public class CheckCodeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -39,20 +39,20 @@ public class CheckCodeServlet extends HttpServlet {
         //生成随机角标
         Random ran = new Random();
 
-        String checkcode="";
+        String verificationCode="";
         for (int i = 1; i <= 4; i++) {
             int index = ran.nextInt(str.length());
             //获取字符
             char ch = str.charAt(index);//随机字符
             //获取验证码字符串
-            checkcode += ch;
+            verificationCode += ch;
             //2.3写验证码
             g.drawString(ch+"",width/5*i,height/2);
         }
 
         //将验证码共享到session中
         HttpSession session = request.getSession();
-        session.setAttribute("checkcode",checkcode);
+        session.setAttribute("verificationCode",verificationCode);
 
         //2.4画干扰线
         g.setColor(Color.GREEN);
