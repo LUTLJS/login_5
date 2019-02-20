@@ -25,6 +25,10 @@ Using DownloadServlet to download file from server side.
 分析：  
 　　访问Servlet，使用request对象获取它所有的cookies，遍历，判断是否存在名为lastTime的cookie  
 　　　存在：获取lastTime的值并写回客户端，同时获取当前时间更新名lastTime的cookie，写回客户端。  
-　　　不存在：创建名为lastTime，值为当前时间的cookie，并写回客户端。
+　　　不存在：创建名为lastTime，值为当前时间的cookie，并写回客户端。  
+## 4:登录时添加验证码校验  
+　　提交表单时，先校验验证码是否正确，  
+  　　正确，才执行用户名和密码的验证  
+    　　错误，则跳转到登录页面。
 
 
