@@ -18,7 +18,5 @@ public class FailServlet extends HttpServlet {
         //1:setting characterEncoding
         resp.setContentType("text/html;charset=utf8");
         resp.getWriter().write("login failed! username or password is not correct!");
-//        resp.sendRedirect("/loginServlet");
-
     }
 }

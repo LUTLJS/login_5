@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,6 @@ public class SuccessServlet extends HttpServlet {
         //1:setting characterEncoding
         resp.setContentType("text/html;charset=utf8");
         //2:get attribute user
-//        User user = (User) req.getAttribute("user");
         ServletContext servletContext = req.getServletContext();
         User user = (User) servletContext.getAttribute("user");
         resp.getWriter().write("Logged in! Welcome "+user.getUsername()+"!"+
@@ -36,35 +36,32 @@ public class SuccessServlet extends HttpServlet {
         Cookie[] cookies = req.getCookies();
         boolean flag=false;
         if (cookies!=null && cookies.length>0){
+            //判断是否存在名为lastTime的cookie
             for (Cookie cookie : cookies) {
-                if ("lastTime".equals(cookie.getName())){
+                if (cookie.getName().equals("lastTime")){
                     flag=true;
-                    //已经登录过
-                    //将上次登录时间显示到客户端
-                    String value = cookie.getValue();
-                    value=URLDecoder.decode(value,"utf-8");
-                    resp.getWriter().write("<br>欢迎回来！您上次的登录时间为"+value);
-                    //覆盖掉当前的cookie
-                    Date date = new Date();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String format_date = simpleDateFormat.format(date);
-                    //处理日期格式中的空格，对format_date进行编码
-                    format_date=URLEncoder.encode(format_date,"utf-8");
-                    cookie.setValue(format_date);
+                    //不是第一次访问
+                    resp.getWriter().write("欢迎回来，您上次的访问时间为："+URLDecoder.decode(cookie.getValue(),
+                            "utf-8"));
+                    cookie.setValue(getEncodedCurrentTime());
                     cookie.setMaxAge(60*60*24*30);
+                    //覆盖掉原来的cookie
                     resp.addCookie(cookie);
                     break;
                 }
             }
         }
         if (!flag){
-            //没来过，没登录过
-            //创建cookie
-            String format_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            Cookie lastTime = new Cookie("lastTime", URLEncoder.encode(format_date, "utf-8"));
-            lastTime.setMaxAge(60*60*24*30);
-            resp.addCookie(lastTime);
-            resp.getWriter().write("<br>欢迎您首次登录！");
+            //是第一次访问
+            Cookie cookie = new Cookie("lastTime",getEncodedCurrentTime());
+            cookie.setMaxAge(60*60*24*30);
+            resp.addCookie(cookie);
+            resp.getWriter().write("欢迎您首次登录！");
         }
+    }
+    public static String getEncodedCurrentTime() throws UnsupportedEncodingException {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return URLEncoder.encode(simpleDateFormat.format(date),"utf-8");
     }
 }
